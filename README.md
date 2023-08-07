@@ -65,4 +65,5 @@ This project follows [Semantic Versioning](https://semver.org/) but as the proje
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT)
 
 ## Disclaimer
+
 This tool involves reading and processing SMS messages, which may involve privacy and security concerns. Use this tool responsibly and ensure that you comply with applicable laws and regulations regarding data privacy and SMS usage. The developers of this tool are not responsible for any misuse or unauthorized access to personal information.

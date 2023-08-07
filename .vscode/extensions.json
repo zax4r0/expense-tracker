@@ -1,0 +1,30 @@
+{
+  "recommendations": [
+    "formulahendry.auto-close-tag",
+    "steoates.autoimport",
+    "formulahendry.auto-rename-tag",
+    "aaron-bond.better-comments",
+    "wallabyjs.console-ninja",
+    "vivaxy.vscode-conventional-commits",
+    "mikestead.dotenv",
+    "usernamehw.errorlens",
+    "dsznajder.es7-react-js-snippets",
+    "dbaeumer.vscode-eslint",
+    "evondev.indent-rainbow-palettes",
+    "mhutchie.git-graph",
+    "donjayamanne.githistory",
+    "eamodio.gitlens",
+    "kisstkondoros.vscode-gutter-preview",
+    "wix.vscode-import-cost",
+    "oderwat.indent-rainbow",
+    "ms-vscode.vscode-typescript-next",
+    "pkief.material-icon-theme",
+    "pkief.material-product-icons",
+    "christian-kohler.npm-intellisense",
+    "mskelton.one-dark-theme",
+    "johnpapa.vscode-peacock",
+    "esbenp.prettier-vscode",
+    "msjsdiag.vscode-react-native",
+    "britesnow.vscode-toggle-quotes"
+  ]
+}
