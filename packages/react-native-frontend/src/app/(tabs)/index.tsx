@@ -1,99 +1,101 @@
-import React, { useState } from 'react'
-import { StyleSheet, TextInput, Button } from 'react-native'
-import { Text, View } from '@/components/Themed'
-import { useGetJokeQuery } from '@/data/client/test'
-import { LoadingIndicator } from '@/components/LoadingIndicator'
-import { ErrorMessage } from '@/components/ErrorMessage'
+import Colors, { appColors } from '@/constants/Colors'
+import React, { useEffect, useState } from 'react'
+import { StatusBar, View, Text, FlatList, Image, TouchableOpacity, Dimensions, StyleSheet, useColorScheme } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 
-import { useForm, Controller } from 'react-hook-form'
-import JokeDisplay from '@/components/JokeDisplay'
-import { useRefreshByUser } from '@/hooks/useRefreshByUser'
-import { useRefreshOnFocus } from '@/hooks/useRefreshOnFocus'
-import { onlineManager } from '@tanstack/react-query'
+const { height } = Dimensions.get('window')
+const totalBalanceSectionHeight = height * 0.2
 
-export default function TabOneScreen() {
-  const [search, setSearch] = useState('Any')
-  const { isLoading, jokeError, joke, refetch } = useGetJokeQuery(search)
-  useRefreshByUser(refetch)
-  useRefreshOnFocus(refetch)
-
-  type FormData = {
-    search: string
-  }
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<FormData>()
-
-  const onSubmit = (data: FormData) => {
-    setSearch(data.search)
-  }
-
-  if (isLoading) return <LoadingIndicator />
-  if (jokeError) return <ErrorMessage error={jokeError}>Error</ErrorMessage>
-  if (!joke) return <Text style={styles.title}>Not Found</Text>
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{onlineManager.isOnline() ? 'Online' : 'Offline'}</Text>
-      <Controller
-        control={control}
-        rules={{
-          required: true
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Search"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            returnKeyLabel="Search"
-            returnKeyType="search"
-            placeholderTextColor="#fff"
-          />
-        )}
-        name="search"
-      />
-      {errors.search && <Text>This is required.</Text>}
-      <JokeDisplay joke={joke} />
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    </View>
-  )
+interface Bank {
+  name: string
+  balance: number
+  image?: string
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginTop: 10
-  },
-  container2: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  input: {
-    width: '90%',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    color: 'white',
-    backgroundColor: '#171717'
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%'
-  }
-})
+export default function Home() {
+  const colorScheme = useColorScheme()
+  const isDarkMode = colorScheme === 'dark'
+
+  const [banks, setBanks] = useState<Bank[]>([
+    { name: 'HDFC', balance: 10000, image: 'https://1000logos.net/wp-content/uploads/2021/06/HDFC-Bank-emblem.png' },
+    { name: 'BOB', balance: 5500, image: 'https://1000logos.net/wp-content/uploads/2021/06/Bank-of-Baroda-icon.png' },
+    { name: 'Test', balance: 100 }
+  ])
+
+  const [totalBalance, setTotalBalance] = useState(0)
+
+  useEffect(() => {
+    const total = banks.reduce((total, bank) => total + bank.balance, 0)
+    setTotalBalance(total)
+  }, [banks])
+
+  return (
+    <SafeAreaView style={{ flex: 1, padding: 10 }}>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={appColors.appMain} />
+      <View
+        style={{
+          height: totalBalanceSectionHeight,
+          backgroundColor: appColors.appMain,
+          borderRadius: 10,
+          justifyContent: 'center',
+          paddingLeft: 20,
+          shadowColor: isDarkMode ? '#FFF' : '#000', // Adjust shadow color based on theme
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 8,
+          marginBottom: 20
+        }}
+      >
+        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Total Balance: ₹{totalBalance.toLocaleString()}</Text>
+      </View>
+      <FlatList
+        data={banks}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: 15,
+              padding: 15,
+              borderRadius: 10,
+              shadowColor: isDarkMode ? '#292929' : '#000', // Adjust shadow color based on theme
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.2,
+              shadowRadius: 8,
+              backgroundColor: Colors[colorScheme ?? 'dark'].secondaryBackground
+            }}
+          >
+            {item.image ? (
+              <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 25, marginRight: 15 }} />
+            ) : (
+              <View
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  backgroundColor: Colors[colorScheme ?? 'dark'].secondaryBackground,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: 15
+                }}
+              >
+                <FontAwesome name="bank" size={30} />
+              </View>
+            )}
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', color: Colors[colorScheme ?? 'dark'].text }}>{item.name}</Text>
+              <Text style={{ fontSize: 16, marginTop: 5, color: Colors[colorScheme ?? 'dark'].text }}>
+                ₹ {item.balance.toLocaleString('en-IN')}
+              </Text>
+            </View>
+            <TouchableOpacity style={{ padding: 5, borderRadius: 25, borderColor: appColors.appMain, borderWidth: 0 }}>
+              <FontAwesome name="refresh" size={24} color={appColors.appMain} />
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+    </SafeAreaView>
+  )
+}
