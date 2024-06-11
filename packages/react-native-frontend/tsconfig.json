@@ -2,9 +2,9 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["src/*"]
     },
     "esModuleInterop": true,
     "incremental": false,
@@ -16,7 +16,5 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": true
   },
-
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "src/app/_layouttsx"],
-  "exclude": ["node_modules", "dist", ".output"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }
