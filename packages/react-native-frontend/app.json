@@ -1,7 +1,7 @@
 {
   "expo": {
     "splash": {
-      "image": "assets/splash.png",
+      "image": "src/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -12,6 +12,10 @@
     },
     "android": {
       "package": "com.zax4r0.expencetracker"
+    },
+    "plugins": ["expo-font"],
+    "experiments": {
+      "typedRoutes": true
     }
   }
 }
