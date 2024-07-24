@@ -11,7 +11,8 @@
       }
     },
     "android": {
-      "package": "com.zax4r0.expencetracker"
+      "package": "com.zax4r0.expencetracker",
+      "permissions": ["android.permission.READ_SMS", "android.permission.RECEIVE_SMS"]
     },
     "plugins": ["expo-font"],
     "experiments": {

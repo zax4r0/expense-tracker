@@ -1,11 +1,12 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import { Text, View } from '@/components/ui/Themed'
+import { View } from '@/components/ui/Themed'
+import SMSComponent from '@/components/Sms'
 
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Wallet</Text>
+      <SMSComponent />
     </View>
   )
 }
